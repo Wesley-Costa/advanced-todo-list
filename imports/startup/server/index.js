@@ -1,9 +1,9 @@
-import dotenv from 'dotenv';
-dotenv.config();
-
 import { Accounts } from 'meteor/accounts-base';
 import '../../api/UserMethods';
 import '../../api/UserPublications';
+
+import dotenv from 'dotenv';
+dotenv.config();
 
 console.log('MAIL_URL definida?', !!process.env.MAIL_URL);
 

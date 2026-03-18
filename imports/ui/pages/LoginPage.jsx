@@ -1,18 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Link, useNavigate } from 'react-router-dom';
-import {
-  Alert,
-  Box,
-  Button,
-  Paper,
-  TextField,
-  Typography,
-  Collapse,
-} from '@mui/material';
+import { Alert, Box, Button, Paper, TextField, Typography, Collapse } from '@mui/material';
 import '../styles/auth.css';
 
-export default function LoginPage() {
+export const LoginPage = () => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('');

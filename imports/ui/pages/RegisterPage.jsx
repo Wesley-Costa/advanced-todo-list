@@ -1,27 +1,20 @@
-import React, { useState } from 'react';
-import { Meteor } from 'meteor/meteor';
-import { Link, useNavigate } from 'react-router-dom';
-import {
-  Box,
-  Button,
-  Container,
-  Paper,
-  TextField,
-  Typography,
-} from '@mui/material';
-import '../styles/auth.css';
+import React, { useState } from "react";
+import { Meteor } from "meteor/meteor";
+import { Link, useNavigate } from "react-router-dom";
+import { Box, Button, Paper, TextField, Typography } from "@mui/material";
+import "../styles/auth.css";
 
-export default function RegisterPage() {
+export const RegisterPage = () => {
   const navigate = useNavigate();
 
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleRegister = (event) => {
     event.preventDefault();
 
-    Meteor.call('users.register', { name, email, password }, (error) => {
+    Meteor.call("users.register", { name, email, password }, (error) => {
       if (error) {
         alert(error.reason);
         return;
@@ -33,7 +26,7 @@ export default function RegisterPage() {
           return;
         }
 
-        navigate('/');
+        navigate("/");
       });
     });
   };
@@ -72,7 +65,12 @@ export default function RegisterPage() {
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          <Button type="submit" variant="contained" fullWidth className="auth-button">
+          <Button
+            type="submit"
+            variant="contained"
+            fullWidth
+            className="auth-button"
+          >
             Criar conta
           </Button>
 
@@ -88,4 +86,4 @@ export default function RegisterPage() {
       </Paper>
     </Box>
   );
-}
+};

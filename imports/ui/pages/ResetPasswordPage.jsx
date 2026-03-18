@@ -1,37 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import { Accounts } from 'meteor/accounts-base';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import {
-  Alert,
-  Box,
-  Button,
-  Collapse,
-  Paper,
-  TextField,
-  Typography,
-} from '@mui/material';
-import '../styles/auth.css';
+import React, { useEffect, useState } from "react";
+import { Accounts } from "meteor/accounts-base";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { Alert, Box, Button, Collapse, Paper, TextField, Typography} from "@mui/material";
+import "../styles/auth.css";
 
-export default function ResetPasswordPage() {
+export const ResetPasswordPage = () => {
   const { token } = useParams();
   const navigate = useNavigate();
 
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    console.log('TOKEN DA URL:', token);
+    console.log("TOKEN DA URL:", token);
   }, [token]);
 
   useEffect(() => {
     if (!error && !success) return;
 
     const timer = setTimeout(() => {
-      setError('');
-      setSuccess('');
+      setError("");
+      setSuccess("");
     }, 10000);
 
     return () => clearTimeout(timer);
@@ -42,16 +34,16 @@ export default function ResetPasswordPage() {
 
     if (loading) return;
 
-    setError('');
-    setSuccess('');
+    setError("");
+    setSuccess("");
 
     if (!token) {
-      setError('Token de redefinição inválido ou ausente.');
+      setError("Token de redefinição inválido ou ausente.");
       return;
     }
 
     if (password !== confirmPassword) {
-      setError('As senhas não conferem.');
+      setError("As senhas não conferem.");
       return;
     }
 
@@ -61,17 +53,17 @@ export default function ResetPasswordPage() {
       setLoading(false);
 
       if (err) {
-        console.error('Erro resetPassword:', err);
-        setError(err.reason || 'Erro ao redefinir senha.');
+        console.error("Erro resetPassword:", err);
+        setError(err.reason || "Erro ao redefinir senha.");
         return;
       }
 
-      setSuccess('Senha redefinida com sucesso.');
-      setPassword('');
-      setConfirmPassword('');
+      setSuccess("Senha redefinida com sucesso.");
+      setPassword("");
+      setConfirmPassword("");
 
       setTimeout(() => {
-        navigate('/login');
+        navigate("/login");
       }, 1500);
     });
   };
@@ -95,7 +87,11 @@ export default function ResetPasswordPage() {
           </Alert>
         </Collapse>
 
-        <Box component="form" onSubmit={handleResetPassword} className="auth-form">
+        <Box
+          component="form"
+          onSubmit={handleResetPassword}
+          className="auth-form"
+        >
           <TextField
             label="Nova senha"
             type="password"
@@ -104,7 +100,7 @@ export default function ResetPasswordPage() {
             value={password}
             onChange={(e) => {
               setPassword(e.target.value);
-              if (error) setError('');
+              if (error) setError("");
             }}
           />
 
@@ -116,7 +112,7 @@ export default function ResetPasswordPage() {
             value={confirmPassword}
             onChange={(e) => {
               setConfirmPassword(e.target.value);
-              if (error) setError('');
+              if (error) setError("");
             }}
           />
 
@@ -127,7 +123,7 @@ export default function ResetPasswordPage() {
             className="auth-button"
             disabled={loading}
           >
-            {loading ? 'Redefinindo...' : 'Redefinir senha'}
+            {loading ? "Redefinindo..." : "Redefinir senha"}
           </Button>
 
           <Button
@@ -142,4 +138,4 @@ export default function ResetPasswordPage() {
       </Paper>
     </Box>
   );
-}
+};

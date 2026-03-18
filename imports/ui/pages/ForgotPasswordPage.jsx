@@ -1,18 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Accounts } from "meteor/accounts-base";
 import { Link } from "react-router-dom";
-import {
-  Alert,
-  Box,
-  Button,
-  Collapse,
-  Paper,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Alert, Box, Button, Collapse, Paper, TextField, Typography } from "@mui/material";
 import "../styles/auth.css";
 
-export default function ForgotPasswordPage() {
+export const ForgotPasswordPage = () => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");

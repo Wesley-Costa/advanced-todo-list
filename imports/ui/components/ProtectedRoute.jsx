@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
 import { useTracker } from 'meteor/react-meteor-data';
 
-export default function ProtectedRoute({ children }) {
+export const ProtectedRoute = ({ children }) => {
   const user = useTracker(() => Meteor.user());
 
   if (!user) {
