@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Accounts } from "meteor/accounts-base";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Alert, Box, Button, Collapse, Paper, TextField, Typography} from "@mui/material";
-import "../styles/auth.css";
+import {
+  Alert,
+  Box,
+  Button,
+  Collapse,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
+import "../styles/styles.css";
 
 export const ResetPasswordPage = () => {
   const { token } = useParams();
@@ -15,10 +23,6 @@ export const ResetPasswordPage = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    console.log("TOKEN DA URL:", token);
-  }, [token]);
-
-  useEffect(() => {
     if (!error && !success) return;
 
     const timer = setTimeout(() => {
@@ -29,8 +33,8 @@ export const ResetPasswordPage = () => {
     return () => clearTimeout(timer);
   }, [error, success]);
 
-  const handleResetPassword = (event) => {
-    event.preventDefault();
+  const handleResetPassword = (e) => {
+    e.preventDefault();
 
     if (loading) return;
 
@@ -42,6 +46,16 @@ export const ResetPasswordPage = () => {
       return;
     }
 
+    if (!password.trim() && !confirmPassword.trim()) {
+      setError("Por favor, preencha os campos corretamente.");
+      return;
+    }
+
+    if (password.length < 6) {
+      setError("A senha deve conter no mínimo 6 caracteres.");
+      return;
+    }
+
     if (password !== confirmPassword) {
       setError("As senhas não conferem.");
       return;
@@ -49,12 +63,11 @@ export const ResetPasswordPage = () => {
 
     setLoading(true);
 
-    Accounts.resetPassword(token, password, (err) => {
+    Accounts.resetPassword(token, password, (error) => {
       setLoading(false);
 
-      if (err) {
-        console.error("Erro resetPassword:", err);
-        setError(err.reason || "Erro ao redefinir senha.");
+      if (error) {
+        setError("Erro ao redefinir senha.");
         return;
       }
 
@@ -76,13 +89,21 @@ export const ResetPasswordPage = () => {
         </Typography>
 
         <Collapse in={!!error}>
-          <Alert severity="error" className="auth-alert">
+          <Alert
+            severity="error"
+            className="auth-alert"
+            onClose={() => setError("")}
+          >
             {error}
           </Alert>
         </Collapse>
 
         <Collapse in={!!success}>
-          <Alert severity="success" className="auth-alert">
+          <Alert
+            severity="success"
+            className="auth-alert"
+            onClose={() => setSuccess("")}
+          >
             {success}
           </Alert>
         </Collapse>
@@ -102,6 +123,7 @@ export const ResetPasswordPage = () => {
               setPassword(e.target.value);
               if (error) setError("");
             }}
+            disabled={loading}
           />
 
           <TextField
@@ -114,6 +136,7 @@ export const ResetPasswordPage = () => {
               setConfirmPassword(e.target.value);
               if (error) setError("");
             }}
+            disabled={loading}
           />
 
           <Button
@@ -131,6 +154,7 @@ export const ResetPasswordPage = () => {
             to="/login"
             fullWidth
             className="auth-link-button"
+            disabled={loading}
           >
             Voltar para login
           </Button>

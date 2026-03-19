@@ -7,13 +7,17 @@ body,
   padding: 0;
 }
 
-.auth-alert {
-  margin-bottom: 16px;
-}
-
 body {
   background: #f4f6f8;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.app-loading-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f4f6f8;
 }
 
 .auth-page {
@@ -37,7 +41,7 @@ body {
 }
 
 .auth-title {
-  text-align: center;
+  text-align: center;  
   margin-bottom: 20px !important;
 }
 
