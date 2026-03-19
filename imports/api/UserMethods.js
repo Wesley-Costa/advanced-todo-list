@@ -1,28 +1,7 @@
-import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
 import { check } from "meteor/check";
 
 Meteor.methods({
-  async "users.updateUsername"({ username }) {
-    if (!this.userId) {
-      throw new Meteor.Error("Not authorized.");
-    }
-
-    const cleanUsername = username?.trim();
-
-    if (!cleanUsername) {
-      throw new Meteor.Error("Username is required.");
-    }
-
-    if (cleanUsername.length < 3) {
-      throw new Meteor.Error("Username must have at least 3 characters.");
-    }
-
-    await Accounts.setUsername(this.userId, cleanUsername);
-
-    return true;
-  },
-
   async "users.register"(data) {
     check(data, {
       name: String,
@@ -30,36 +9,66 @@ Meteor.methods({
       password: String,
     });
 
-    const existingUser = Accounts.findUserByEmail(data.email);
+    const name = data.name.trim();
+    const email = data.email.trim().toLowerCase();
+    const password = data.password;
 
-    if (existingUser) {
-      throw new Meteor.Error('user-exists', 'Email já cadastrado.');
+    if (!name) {
+      throw new Meteor.Error("invalid-name", "Nome é obrigatório.");
     }
 
-    const userId = Accounts.createUser({
-      email: data.email,
-      password: data.email,
+    if (!email) {
+      throw new Meteor.Error("invalid-email", "Email é obrigatório.");
+    }
+
+    if (!password) {
+      throw new Meteor.Error("invalid-password", "Senha é obrigatória.");
+    }
+
+    if (password.length < 6) {
+      throw new Meteor.Error(
+        "invalid-password",
+        "A senha deve ter pelo menos 6 caracteres."
+      );
+    }
+
+    const existingUser = await Accounts.findUserByEmail(email);
+
+    if (existingUser) {
+      throw new Meteor.Error("user-exists", "Email já cadastrado.");
+    }
+
+    const userId = await Accounts.createUserAsync({
+      email,
+      password,
       profile: {
-        name: data.email,
-        birthDate: '',
-        gender: '',
-        photo: '',
-      }
-    })
+        name,
+        birthDate: "",
+        gender: "",
+        company: "",
+        photo: "",
+      },
+    });
 
     return userId;
   },
 
-  'users.forgotPassword'(email) {
+  async "users.forgotPassword"(email) {
     check(email, String);
 
-    const user = Accounts.findUserByEmail(email);
+    const normalizedEmail = email.trim().toLowerCase();
 
-    if (!user) {
-      throw new Meteor.Error('user-not-found', 'Usuário não encontrado.');
+    if (!normalizedEmail) {
+      throw new Meteor.Error("invalid-email", "Email é obrigatório.");
     }
 
-    Accounts.sendResetPasswordEmail(user._id);
+    const user = await Accounts.findUserByEmail(normalizedEmail);
+
+    if (!user) {
+      throw new Meteor.Error("user-not-found", "Usuário não encontrado.");
+    }
+
+    await Accounts.sendResetPasswordEmail(user._id);
 
     return true;
   },

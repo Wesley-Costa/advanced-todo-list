@@ -2,36 +2,66 @@ import React, { useEffect, useState } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Link, useNavigate } from 'react-router-dom';
 import { Alert, Box, Button, Paper, TextField, Typography, Collapse } from '@mui/material';
-import '../styles/auth.css';
+import "../styles/styles.css";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!error) return;
 
     const timer = setTimeout(() => {
-      setError('');
+      setError("");
     }, 6000);
 
     return () => clearTimeout(timer);
   }, [error]);
 
-  const handleLogin = (event) => {
-    event.preventDefault();
-    setError('');
+  const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
-    Meteor.loginWithPassword(email, password, (loginError) => {
-      if (loginError) {
-        setError('Usuário ou senha inválidos.' || loginError.reason);
+  const handleLogin = (e) => {
+    e.preventDefault();
+    setError("");
+
+    if (!email.trim() && !password.trim()) {
+      setError("Por favor, preencha todos os campos.");
+      return;
+    }
+
+    if (!email.trim()) {
+      setError("Por favor, insira seu email.");
+      return;
+    }
+
+    if (!password.trim()) {
+      setError("Por favor, insira sua senha.");
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      setError("Por favor, insira um email válido.");
+      return;
+    }
+
+    setLoading(true);
+
+    Meteor.loginWithPassword({ email }, password, (error) => {
+      setLoading(false);
+
+      if (error) {
+        setError("Usuário ou senha inválidos.");
         return;
       }
 
-      navigate('/');
+      navigate("/")
     });
   };
 
@@ -43,7 +73,11 @@ export const LoginPage = () => {
         </Typography>
 
         <Collapse in={!!error}>
-          <Alert severity="error" className="auth-alert">
+          <Alert 
+            severity="error" 
+            className="auth-alert"
+            onClose={() => setError("")}
+          >
             {error}
           </Alert>
         </Collapse>
@@ -56,6 +90,7 @@ export const LoginPage = () => {
             margin="normal"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            disabled={loading}
           />
 
           <TextField
@@ -65,6 +100,7 @@ export const LoginPage = () => {
             margin="normal"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            disabled={loading}
           />
 
           <Button
@@ -72,8 +108,9 @@ export const LoginPage = () => {
             variant="contained"
             fullWidth
             className="auth-button"
+            disabled={loading}
           >
-            Entrar
+            {loading ? "Entrando..." : "Entrar"}
           </Button>
 
           <Button
@@ -97,4 +134,4 @@ export const LoginPage = () => {
       </Paper>
     </Box>
   );
-}
+};

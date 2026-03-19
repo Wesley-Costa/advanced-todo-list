@@ -1,11 +1,7 @@
-import React from 'react';
-import { Navigate } from 'react-router-dom';
-import { Meteor } from 'meteor/meteor';
-import { useTracker } from 'meteor/react-meteor-data';
+import React from "react";
+import { Navigate } from "react-router-dom";
 
-export const ProtectedRoute = ({ children }) => {
-  const user = useTracker(() => Meteor.user());
-
+export function ProtectedRoute({ user, children }) {
   if (!user) {
     return <Navigate to="/login" replace />;
   }
