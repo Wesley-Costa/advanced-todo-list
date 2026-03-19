@@ -2,10 +2,10 @@ import React from "react";
 import { useTracker } from "meteor/react-meteor-data";
 import { useNavigate } from "react-router-dom";
 import { Box, Button, Container, Paper, Typography, CircularProgress, Fab } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
 import { Meteor } from "meteor/meteor";
 import { TasksCollection } from "../../api/TasksCollection";
 import { Tasks } from "../components/Tasks";
+import AddIcon from "@mui/icons-material/Add";
 import "../styles/styles.css";
 
 export function ListTasksPage() {
