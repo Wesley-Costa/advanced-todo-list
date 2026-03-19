@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Meteor } from "meteor/meteor";
 import { Link, useNavigate } from "react-router-dom";
-import { Box, Button, Paper, TextField, Typography } from "@mui/material";
+import { Box, Button, Paper, TextField, Typography, Alert, Collapse } from "@mui/material";
 import "../styles/styles.css";
 export const RegisterPage = () => {
   const navigate = useNavigate();
@@ -9,19 +9,50 @@ export const RegisterPage = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
   const handleRegister = (event) => {
     event.preventDefault();
 
+    if (!email.trim() && !password.trim() && !name.trim()) {
+      setError("Por favor, preencha todos os campos.");
+      return;
+    }
+
+    if (!email.trim()) {
+      setError("Por favor, insira seu email.");
+      return;
+    }
+
+    if (!password.trim()) {
+      setError("Por favor, insira sua senha.");
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      setError("Por favor, insira um email válido.");
+      return;
+    }
+
+    if (password.length < 6) {
+      setError("Por favor, a senha deve conter no minimo 6 caracteres.");
+      return;
+    }
+
     Meteor.call("users.register", { name, email, password }, (error) => {
       if (error) {
-        alert(error.reason);
+        setError(error.reason);
         return;
       }
 
       Meteor.loginWithPassword(email, password, (loginError) => {
         if (loginError) {
-          alert(loginError.reason);
+          setError(loginError.reason);
           return;
         }
 
@@ -36,6 +67,16 @@ export const RegisterPage = () => {
         <Typography variant="h4" className="auth-title">
           Cadastro
         </Typography>
+
+        <Collapse in={!!error}>
+          <Alert
+            severity="error"
+            className="auth-alert"
+            onClose={() => setError("")}
+          >
+            {error}
+          </Alert>
+        </Collapse>
 
         <Box component="form" onSubmit={handleRegister} className="auth-form">
           <TextField
