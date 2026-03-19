@@ -1,6 +1,10 @@
+
 import { Accounts } from 'meteor/accounts-base';
 import '../../api/UserMethods';
 import '../../api/UserPublications';
+import '../../api/TasksCollection';
+import '../../api/TasksMethods';
+import '../../api/TasksPublications';
 
 import dotenv from 'dotenv';
 dotenv.config();
