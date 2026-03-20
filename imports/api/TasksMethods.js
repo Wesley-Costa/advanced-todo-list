@@ -22,6 +22,7 @@ Meteor.methods({
       date: new Date(data.taskDate),
       status: "Cadastrada",
       createdAt: new Date(),
+      updatedAt: new Date(),
       userId: this.userId,
       userName:
         user?.profile?.name ||
@@ -29,5 +30,90 @@ Meteor.methods({
         user?.emails?.[0]?.address ||
         "Usuário",
     });
+  },
+
+  async "tasks.update"({ _id, name, description, status, date }) {
+    if (!this.userId) {
+      throw new Meteor.Error("not-authorized", "Não autorizado");
+    }
+
+    check(_id, String);
+    check(name, String);
+    check(description, String);
+    check(status, String);
+    check(date, String);
+
+    const task = await TasksCollection.findOneAsync({ _id });
+
+    if (!task) {
+      throw new Meteor.Error("not-found", "Tarefa não encontrada");
+    }
+
+    if (task.userId !== this.userId) {
+      throw new Meteor.Error("access-denied", "Acesso negado");
+    }
+
+    await TasksCollection.updateAsync(
+      { _id },
+      {
+        $set: {
+          name,
+          description,
+          status,
+          date: new Date(date),
+        },
+      }
+    );
+  },
+
+  async "tasks.delete"({ _id }) {
+    if (!this.userId) {
+      throw new Meteor.Error("Not authorized.");
+    }
+
+    const task = await TasksCollection.findOneAsync(_id);
+
+    if (!task) {
+      throw new Meteor.Error("Task not found.");
+    }
+
+    if (task.userId !== this.userId) {
+      throw new Meteor.Error("Access denied.");
+    }
+
+    return TasksCollection.removeAsync(_id);
+  },
+
+  async "tasks.updateStatus"({ _id, status }) {
+    if (!this.userId) {
+      throw new Meteor.Error("not-authorized", "Não autorizado");
+    }
+
+    check(_id, String);
+    check(status, String);
+
+    const task = await TasksCollection.findOneAsync({ _id });
+
+    if (!task) {
+      throw new Meteor.Error("not-found", "Tarefa não encontrada");
+    }
+
+    const currentStatus = task.status;
+
+    const canTransition =
+      (currentStatus === "Cadastrada" && status === "Em Andamento") ||
+      (currentStatus === "Em Andamento" && status === "Concluída") ||
+      status === "Cadastrada";
+
+    if (!canTransition) {
+      throw new Meteor.Error("invalid-transition", "Transição de status inválida");
+    }
+
+    await TasksCollection.updateAsync(
+      { _id },
+      {
+        $set: { status },
+      }
+    );
   },
 });
