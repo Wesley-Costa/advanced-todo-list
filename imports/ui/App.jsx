@@ -8,14 +8,21 @@ import { RegisterPage } from "./pages/RegisterPage";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { ForgotPasswordPage } from "./pages/ForgotPasswordPage";
 import { ResetPasswordPage } from "./pages/ResetPasswordPage";
-import { ListTasksPage } from "./pages/ListTasksPage";
-import { RegisterTaskPage } from "./pages/RegisterTaskPage";
+
+import { TasksListPage } from "./pages/TasksListPage";
+import { TaskRegisterPage } from "./pages/TaskRegisterPage";
+import { TaskDetailsPage } from "./pages/TaskDetailsPage";
 import "./styles/styles.css";
 
 export const App = () => {
-  const user = useTracker(() => {
-    return Meteor.user();
+  const { user, isLoading } = useTracker(() => {
+    return {
+      user: Meteor.user(),
+      isLoading: Meteor.loggingIn(),
+    };
   });
+
+  if (isLoading) return null;
 
   return (
     <BrowserRouter>
@@ -48,19 +55,27 @@ export const App = () => {
         <Route
           path="/tasks"
           element={
-            <ProtectedRoute user={user}>
-              <ListTasksPage />
+            <ProtectedRoute user={user} isLoading={isLoading}>
+              <TasksListPage />
             </ProtectedRoute>
           }
         />
         <Route
           path="/tasks/register"
           element={
-            <ProtectedRoute user={user}>
-              <RegisterTaskPage />
+            <ProtectedRoute user={user} isLoading={isLoading}>
+              <TaskRegisterPage />
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/task/:id/edit"
+          element={
+            <ProtectedRoute user={user} isLoading={isLoading}>
+              <TaskDetailsPage />
+            </ProtectedRoute>
+          }
+        /> 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

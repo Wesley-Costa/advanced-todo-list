@@ -8,7 +8,7 @@ import { Tasks } from "../components/Tasks";
 import AddIcon from "@mui/icons-material/Add";
 import "../styles/styles.css";
 
-export function ListTasksPage() {
+export function TasksListPage() {
   const navigate = useNavigate();
 
   const { tasks, isLoading } = useTracker(() => {
@@ -19,6 +19,14 @@ export function ListTasksPage() {
 
     return { tasks, isLoading };
   });
+
+  const handleDeleteTask = ({ _id }) => {
+    Meteor.callAsync("tasks.delete", { _id });
+  };
+  
+  const handleEditTask = ({_id}) => {
+    navigate(`/task/${_id}/edit`);
+  };
 
   return (
     <Container maxWidth="md" className="tasks-page-container">
@@ -46,7 +54,11 @@ export function ListTasksPage() {
             Nenhuma tarefa cadastrada.
           </Typography>
         ) : (
-          <Tasks tasks={tasks} />
+          <Tasks
+            tasks={tasks}
+            onEditTask={handleEditTask}
+            onDeleteTask={handleDeleteTask}
+          />
         )}
       </Paper>
 
