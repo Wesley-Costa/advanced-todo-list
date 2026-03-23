@@ -6,10 +6,11 @@ import { TasksCollection } from "../../api/TasksCollection";
 import { Box, Button, Container, Stack, Paper, TextField, Typography, CircularProgress, Alert, 
   Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, FormControlLabel, Checkbox } from "@mui/material";
 import "../styles/styles.css";
+import { SideMenu } from "../components/SideMenu";
 
 export function TaskDetailsPage() {
   const navigate = useNavigate();
-  const user = useTracker(() => Meteor.user())
+  const user = useTracker(() => Meteor.user());
   const { id } = useParams();
   const [isEditing, setIsEditing] = useState(false);
 
@@ -29,7 +30,7 @@ export function TaskDetailsPage() {
     const task = TasksCollection.findOne({ _id: id });
 
     return { task, isLoading };
-  }, [id]);  
+  }, [id]);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -37,7 +38,7 @@ export function TaskDetailsPage() {
     status: "",
     date: "",
     userName: "",
-    isPersonal: false
+    isPersonal: false,
   });
 
   useEffect(() => {
@@ -70,7 +71,7 @@ export function TaskDetailsPage() {
         status: task.status || "Cadastrada",
         date: task.date ? formatDateToInput(task.date) : "",
         userName: task.userName || "",
-        isPersonal: task.isPersonal || false
+        isPersonal: task.isPersonal || false,
       });
     }
   }, [task]);
@@ -103,7 +104,7 @@ export function TaskDetailsPage() {
         status: formData.status,
         date: formData.date,
         userName: formData.userName,
-        isPersonal: formData.isPersonal
+        isPersonal: formData.isPersonal,
       });
 
       setIsEditing(false);
@@ -128,7 +129,7 @@ export function TaskDetailsPage() {
         status: task.status || "Cadastrada",
         date: task.date ? formatDateToInput(task.date) : "",
         userName: task.userName || "",
-        isPersonal: task.isPersonal || false
+        isPersonal: task.isPersonal || false,
       });
     }
 
@@ -216,161 +217,174 @@ export function TaskDetailsPage() {
   const currentStatus = task.status;
 
   return (
-    <Container maxWidth="md" className="task-details-container">
-      <Paper className="task-details-paper">
-        <Typography variant="h4" className="task-details-title">
-          {isEditing ? "Editar Tarefa" : "Visualizar Tarefa"}
-        </Typography>
+    <>
+      <SideMenu />
+      <Container maxWidth="md" className="task-details-container">
+        <Paper className="task-details-paper">
+          <Typography variant="h4" className="task-details-title">
+            {isEditing ? "Editar Tarefa" : "Visualizar Tarefa"}
+          </Typography>
 
-        {user?._id === task.userId && (<Box className="task-details-actions-top">
-          {!isEditing ? (
-            <Button
-              variant="contained"
-              onClick={() => {
-                setFeedback({ type: "", message: "" });
-                setIsEditing(true);
-              }}
-              disabled={redirecting}
-            >
-              Editar
-            </Button>
-          ) : (
-            <Button
-              variant="contained"
-              onClick={() => setIsEditing(false)}
-              disabled={redirecting}
-            >
-              Visualizar
-            </Button>
+          {user?._id === task.userId && (
+            <Box className="task-details-actions-top">
+              {!isEditing ? (
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    setFeedback({ type: "", message: "" });
+                    setIsEditing(true);
+                  }}
+                  disabled={redirecting}
+                >
+                  Editar
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  onClick={() => setIsEditing(false)}
+                  disabled={redirecting}
+                >
+                  Visualizar
+                </Button>
+              )}
+            </Box>
           )}
-        </Box>)}
 
-        {feedback.message && (
-          <Box className="task-details-alert-wrapper">
-            <Alert severity={feedback.type} sx={{ mb: 2 }}>
-              {feedback.message}
-            </Alert>
-          </Box>
-        )}
+          {feedback.message && (
+            <Box className="task-details-alert-wrapper">
+              <Alert severity={feedback.type} sx={{ mb: 2 }}>
+                {feedback.message}
+              </Alert>
+            </Box>
+          )}
 
-        {!isEditing && user?._id === task.userId && (
-          <Box className="task-details-status-actions">
-            <Typography variant="h6" sx={{ mb: 2 }}>
-              Alterar Situação da Tarefa
-            </Typography>
+          {!isEditing && user?._id === task.userId && (
+            <Box className="task-details-status-actions">
+              <Typography variant="h6" sx={{ mb: 2 }}>
+                Alterar Situação da Tarefa
+              </Typography>
 
-            <Stack direction="row" spacing={2} flexWrap="wrap">
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={() => handleChangeStatus("Em Andamento")}
-                disabled={currentStatus !== "Cadastrada"}
-              >
-                Iniciar
-              </Button>
+              <Stack direction="row" spacing={2} flexWrap="wrap">
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => handleChangeStatus("Em Andamento")}
+                  disabled={currentStatus !== "Cadastrada"}
+                >
+                  Iniciar
+                </Button>
 
-              <Button
-                variant="outlined"
-                color="success"
-                onClick={() => handleChangeStatus("Concluída")}
-                disabled={currentStatus !== "Em Andamento"}
-              >
-                Concluir
-              </Button>
+                <Button
+                  variant="outlined"
+                  color="success"
+                  onClick={() => handleChangeStatus("Concluída")}
+                  disabled={currentStatus !== "Em Andamento"}
+                >
+                  Concluir
+                </Button>
 
-              <Button
-                variant="outlined"
-                color="warning"
-                onClick={() => handleChangeStatus("Cadastrada")}
-                disabled={currentStatus === "Cadastrada"}
-              >
-                Voltar para Cadastrada
-              </Button>
-            </Stack>
-          </Box>
-        )}
+                <Button
+                  variant="outlined"
+                  color="warning"
+                  onClick={() => handleChangeStatus("Cadastrada")}
+                  disabled={currentStatus === "Cadastrada"}
+                >
+                  Voltar para Cadastrada
+                </Button>
+              </Stack>
+            </Box>
+          )}
 
-        <Box className="task-details-form">
-          <TextField
-            label="Criador"
-            value={formData.userName}
-            disabled
-            fullWidth
-            className="task-details-field"
-          />
-
-          <TextField
-            label="Nome"
-            value={formData.name}
-            onChange={(e) => handleChange("name", e.target.value)}
-            disabled={!isEditing || redirecting}
-            fullWidth
-            className="task-details-field"
-          />
-
-          <TextField
-            label="Descrição"
-            value={formData.description}
-            onChange={(e) => handleChange("description", e.target.value)}
-            disabled={!isEditing || redirecting}
-            fullWidth
-            multiline
-            rows={4}
-            className="task-details-field"
-          />
-
-          <TextField
-            label="Situação"
-            value={formData.status}
-            disabled
-            fullWidth
-            className="task-details-field"
-          />
-
-          <TextField
-            label="Data"
-            type="datetime-local"
-            value={formData.date}
-            onChange={(e) => handleChange("date", e.target.value)}
-            disabled={!isEditing || redirecting}
-            fullWidth
-            InputLabelProps={{ shrink: true }}
-            className="task-details-field"
-          />
-        </Box>
-
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={formData.isPersonal}
-              onChange={(e) => handleChange("isPersonal", e.target.checked)}
-              disabled={!isEditing || redirecting}
+          <Box className="task-details-form">
+            <TextField
+              label="Criador"
+              value={formData.userName}
+              disabled
+              fullWidth
+              className="task-details-field"
             />
-          }
-          label="Tarefa pessoal"
-        />
 
-        <Box className="task-details-actions-bottom">
-          {isEditing ? (
-            <>
-              <Button
-                variant="contained"
-                color="success"
-                onClick={() => handleOpenDialog("save")}
-                disabled={redirecting}
-              >
-                Salvar
-              </Button>
+            <TextField
+              label="Nome"
+              value={formData.name}
+              onChange={(e) => handleChange("name", e.target.value)}
+              disabled={!isEditing || redirecting}
+              fullWidth
+              className="task-details-field"
+            />
 
-              <Button
-                variant="contained"
-                color="error"
-                onClick={() => handleOpenDialog("cancel")}
-                disabled={redirecting}
-              >
-                Cancelar
-              </Button>
+            <TextField
+              label="Descrição"
+              value={formData.description}
+              onChange={(e) => handleChange("description", e.target.value)}
+              disabled={!isEditing || redirecting}
+              fullWidth
+              multiline
+              rows={4}
+              className="task-details-field"
+            />
 
+            <TextField
+              label="Situação"
+              value={formData.status}
+              disabled
+              fullWidth
+              className="task-details-field"
+            />
+
+            <TextField
+              label="Data"
+              type="datetime-local"
+              value={formData.date}
+              onChange={(e) => handleChange("date", e.target.value)}
+              disabled={!isEditing || redirecting}
+              fullWidth
+              InputLabelProps={{ shrink: true }}
+              className="task-details-field"
+            />
+          </Box>
+
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={formData.isPersonal}
+                onChange={(e) => handleChange("isPersonal", e.target.checked)}
+                disabled={!isEditing || redirecting}
+              />
+            }
+            label="Tarefa pessoal"
+          />
+
+          <Box className="task-details-actions-bottom">
+            {isEditing ? (
+              <>
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={() => handleOpenDialog("save")}
+                  disabled={redirecting}
+                >
+                  Salvar
+                </Button>
+
+                <Button
+                  variant="contained"
+                  color="error"
+                  onClick={() => handleOpenDialog("cancel")}
+                  disabled={redirecting}
+                >
+                  Cancelar
+                </Button>
+
+                <Button
+                  variant="outlined"
+                  onClick={() => navigate("/tasks")}
+                  disabled={redirecting}
+                >
+                  Voltar
+                </Button>
+              </>
+            ) : (
               <Button
                 variant="outlined"
                 onClick={() => navigate("/tasks")}
@@ -378,31 +392,27 @@ export function TaskDetailsPage() {
               >
                 Voltar
               </Button>
-            </>
-          ) : (
-            <Button
-              variant="outlined"
-              onClick={() => navigate("/tasks")}
-              disabled={redirecting}
-            >
-              Voltar
-            </Button>
-          )}
-        </Box>
+            )}
+          </Box>
 
-        <Dialog open={dialogOpen} onClose={handleCloseDialog}>
-          <DialogTitle>{getDialogTitle()}</DialogTitle>
-          <DialogContent>
-            <DialogContentText>{getDialogMessage()}</DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseDialog}>Não</Button>
-            <Button onClick={handleConfirmAction} variant="contained" autoFocus>
-              Sim
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </Paper>
-    </Container>
+          <Dialog open={dialogOpen} onClose={handleCloseDialog}>
+            <DialogTitle>{getDialogTitle()}</DialogTitle>
+            <DialogContent>
+              <DialogContentText>{getDialogMessage()}</DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseDialog}>Não</Button>
+              <Button
+                onClick={handleConfirmAction}
+                variant="contained"
+                autoFocus
+              >
+                Sim
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </Paper>
+      </Container>
+    </>
   );
 }

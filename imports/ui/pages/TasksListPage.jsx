@@ -5,6 +5,7 @@ import { Box, Button, Container, Paper, Typography, CircularProgress, Fab } from
 import { Meteor } from "meteor/meteor";
 import { TasksCollection } from "../../api/TasksCollection";
 import { Tasks } from "../components/Tasks";
+import { SideMenu } from "../components/SideMenu";
 import AddIcon from "@mui/icons-material/Add";
 import "../styles/styles.css";
 
@@ -29,47 +30,42 @@ export function TasksListPage() {
   };
 
   return (
-    <Container maxWidth="md" className="tasks-page-container">
-      <Box className="tasks-page-header">
-        <Typography variant="h4" className="tasks-page-title">
-          Tarefas Cadastradas
-        </Typography>
-
-        <Button
-          variant="contained"
-          color="error"
-          onClick={() => Meteor.logout()}
-        >
-          Logout
-        </Button>
-      </Box>
-
-      <Paper className="tasks-page-paper">
-        {isLoading ? (
-          <Box className="tasks-loading-box">
-            <CircularProgress />
-          </Box>
-        ) : tasks.length === 0 ? (
-          <Typography className="tasks-empty-text">
-            Nenhuma tarefa cadastrada.
+    <>
+      <SideMenu />
+      <Container maxWidth="md" className="tasks-page-container">
+        <Box className="tasks-page-header">
+          <Typography variant="h4" className="tasks-page-title">
+            Tarefas Cadastradas
           </Typography>
-        ) : (
-          <Tasks
-            tasks={tasks}
-            onEditTask={handleEditTask}
-            onDeleteTask={handleDeleteTask}
-          />
-        )}
-      </Paper>
+        </Box>
 
-      <Fab
-        color="primary"
-        aria-label="add"
-        onClick={() => navigate("/tasks/register")}
-        className="add-task-fab"
-      >
-        <AddIcon />
-      </Fab>
-    </Container>
+        <Paper className="tasks-page-paper">
+          {isLoading ? (
+            <Box className="tasks-loading-box">
+              <CircularProgress />
+            </Box>
+          ) : tasks.length === 0 ? (
+            <Typography className="tasks-empty-text">
+              Nenhuma tarefa cadastrada.
+            </Typography>
+          ) : (
+            <Tasks
+              tasks={tasks}
+              onEditTask={handleEditTask}
+              onDeleteTask={handleDeleteTask}
+            />
+          )}
+        </Paper>
+
+        <Fab
+          color="primary"
+          aria-label="add"
+          onClick={() => navigate("/tasks/register")}
+          className="add-task-fab"
+        >
+          <AddIcon />
+        </Fab>
+      </Container>
+    </>
   );
 }
