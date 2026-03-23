@@ -6,5 +6,12 @@ Meteor.publish('tasks', function () {
     return this.ready();
   }
 
-  return TasksCollection.find({}, { sort: { createdAt: -1 } });
+  return TasksCollection.find(
+    {
+      $or: [
+        { isPersonal: {$ne: true}},
+        { userId: this.userId }
+      ]
+    }, 
+    { sort: { createdAt: -1 } });
 });

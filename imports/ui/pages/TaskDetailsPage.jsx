@@ -4,7 +4,7 @@ import { useTracker } from "meteor/react-meteor-data";
 import { Meteor } from "meteor/meteor";
 import { TasksCollection } from "../../api/TasksCollection";
 import { Box, Button, Container, Stack, Paper, TextField, Typography, CircularProgress, Alert, 
-  Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from "@mui/material";
+  Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, FormControlLabel, Checkbox } from "@mui/material";
 import "../styles/styles.css";
 
 export function TaskDetailsPage() {
@@ -37,6 +37,7 @@ export function TaskDetailsPage() {
     status: "",
     date: "",
     userName: "",
+    isPersonal: false
   });
 
   useEffect(() => {
@@ -69,6 +70,7 @@ export function TaskDetailsPage() {
         status: task.status || "Cadastrada",
         date: task.date ? formatDateToInput(task.date) : "",
         userName: task.userName || "",
+        isPersonal: task.isPersonal || false
       });
     }
   }, [task]);
@@ -101,6 +103,7 @@ export function TaskDetailsPage() {
         status: formData.status,
         date: formData.date,
         userName: formData.userName,
+        isPersonal: formData.isPersonal
       });
 
       setIsEditing(false);
@@ -125,6 +128,7 @@ export function TaskDetailsPage() {
         status: task.status || "Cadastrada",
         date: task.date ? formatDateToInput(task.date) : "",
         userName: task.userName || "",
+        isPersonal: task.isPersonal || false
       });
     }
 
@@ -334,6 +338,17 @@ export function TaskDetailsPage() {
             className="task-details-field"
           />
         </Box>
+
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={formData.isPersonal}
+              onChange={(e) => handleChange("isPersonal", e.target.checked)}
+              disabled={!isEditing || redirecting}
+            />
+          }
+          label="Tarefa pessoal"
+        />
 
         <Box className="task-details-actions-bottom">
           {isEditing ? (
