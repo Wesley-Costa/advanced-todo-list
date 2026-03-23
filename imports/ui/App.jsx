@@ -22,7 +22,7 @@ export const App = () => {
     };
   });
 
-  if (isLoading) return null;
+  // if (isLoading) return null;
 
   return (
     <BrowserRouter>

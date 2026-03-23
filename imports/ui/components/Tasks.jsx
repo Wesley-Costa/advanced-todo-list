@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { List, ListItem, ListItemIcon, ListItemText, IconButton, Box, Typography, Menu, MenuItem, Dialog, DialogTitle, 
   DialogContent, DialogContentText, DialogActions, Button } from "@mui/material";
+import { useTracker } from "meteor/react-meteor-data";
+import { Meteor } from "meteor/meteor";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import "../styles/styles.css";
@@ -10,6 +12,7 @@ export const Tasks = ({ tasks, onEditTask, onDeleteTask }) => {
   const [selectedTask, setSelectedTask] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogAction, setDialogAction] = useState("");
+  const user = useTracker(() => Meteor.user())
 
   const handleMenuOpen = (e, task) => {
     setAchorEl(e.currentTarget);
@@ -111,8 +114,12 @@ export const Tasks = ({ tasks, onEditTask, onDeleteTask }) => {
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
       >
-        <MenuItem onClick={handleEditTask}>Editar</MenuItem>
-        <MenuItem onClick={() => handleOpenDialog("delete")}>Excluir</MenuItem>
+        <MenuItem onClick={handleEditTask}>
+          { user?._id === selectedTask?.userId ? "Editar" : "Visualizar"}
+        </MenuItem>
+        
+        <MenuItem onClick={() => handleOpenDialog("delete")}  disabled={user?._id !== selectedTask?.userId}>Excluir</MenuItem>
+      
       </Menu>
 
       <Dialog open={dialogOpen} onClose={handleCloseDialog}>

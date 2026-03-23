@@ -9,6 +9,7 @@ import "../styles/styles.css";
 
 export function TaskDetailsPage() {
   const navigate = useNavigate();
+  const user = useTracker(() => Meteor.user())
   const { id } = useParams();
   const [isEditing, setIsEditing] = useState(false);
 
@@ -28,7 +29,7 @@ export function TaskDetailsPage() {
     const task = TasksCollection.findOne({ _id: id });
 
     return { task, isLoading };
-  }, [id]);
+  }, [id]);  
 
   const [formData, setFormData] = useState({
     name: "",
@@ -217,7 +218,7 @@ export function TaskDetailsPage() {
           {isEditing ? "Editar Tarefa" : "Visualizar Tarefa"}
         </Typography>
 
-        <Box className="task-details-actions-top">
+        {user?._id === task.userId && (<Box className="task-details-actions-top">
           {!isEditing ? (
             <Button
               variant="contained"
@@ -238,7 +239,7 @@ export function TaskDetailsPage() {
               Visualizar
             </Button>
           )}
-        </Box>
+        </Box>)}
 
         {feedback.message && (
           <Box className="task-details-alert-wrapper">
@@ -248,7 +249,7 @@ export function TaskDetailsPage() {
           </Box>
         )}
 
-        {!isEditing && (
+        {!isEditing && user?._id === task.userId && (
           <Box className="task-details-status-actions">
             <Typography variant="h6" sx={{ mb: 2 }}>
               Alterar Situação da Tarefa
