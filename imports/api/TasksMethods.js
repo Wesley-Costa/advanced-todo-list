@@ -61,6 +61,7 @@ Meteor.methods({
           description,
           status,
           date: new Date(date),
+          updatedAt: new Date(),
         },
       }
     );
