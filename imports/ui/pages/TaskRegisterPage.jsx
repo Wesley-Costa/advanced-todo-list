@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Alert, Box, Button, Container, Paper, TextField, Typography, Dialog, 
-  DialogTitle, DialogContent, DialogContentText, DialogActions } from "@mui/material";
+  DialogTitle, DialogContent, DialogContentText, DialogActions, Checkbox, FormControlLabel } from "@mui/material";
 import { Meteor } from "meteor/meteor";
 import "../styles/styles.css";
 
@@ -10,6 +10,7 @@ export function TaskRegisterPage() {
   const [taskName, setTaskName] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
   const [taskDate, setTaskDate] = useState("");
+  const [isPersonal, setIsPersonal] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const [feedback, setFeedback] = useState({
@@ -28,6 +29,18 @@ export function TaskRegisterPage() {
   const handleCloseDialog = () => {
     setDialogOpen(false);
     setDialogAction("");
+  };
+
+    const getMinDateTime = () => {
+    const now = new Date();
+
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+    const hours = String(now.getHours()).padStart(2, "0");
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
   };
 
   const handleSubmit = (e) => {
@@ -60,6 +73,17 @@ export function TaskRegisterPage() {
       return;
     }
 
+    const selectedDate = new Date(taskDate);
+    const now = new Date();
+
+    if (selectedDate < now) {
+      setFeedback({
+        type: "error",
+        message: "Informe uma data e horário iguais ou posteriores ao momento atual.",
+      });
+      return;
+    }
+
     setFeedback({ type: "", message: "" });
     setLoading(true);
 
@@ -69,6 +93,7 @@ export function TaskRegisterPage() {
         taskName,
         taskDescription,
         taskDate,
+        isPersonal
       },
       (err) => {
         setLoading(false);
@@ -89,11 +114,12 @@ export function TaskRegisterPage() {
         setTaskName("");
         setTaskDescription("");
         setTaskDate("");
+        setIsPersonal(false);
 
         setTimeout(() => {
           navigate("/tasks");
         }, 1000);
-      },
+      }
     );
   };
 
@@ -183,8 +209,27 @@ export function TaskRegisterPage() {
             value={taskDate}
             onChange={(e) => setTaskDate(e.target.value)}
             margin="normal"
-            InputLabelProps={{ shrink: true }}
+            helperText="Selecione a data atual ou uma data futura."
+            slotProps={{
+              inputLabel: {
+                shrink: true,
+              },
+              htmlInput: {
+                min: getMinDateTime(),
+              },
+            }}
           />
+
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={isPersonal}
+                onChange={(e) => setIsPersonal(e.target.checked)}
+              />
+            }
+            label="Tarefa pessoal"
+          />
+
 
           <Box className="register-task-actions">
             <Button

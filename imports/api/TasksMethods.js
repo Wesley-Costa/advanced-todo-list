@@ -12,6 +12,7 @@ Meteor.methods({
       taskName: String,
       taskDescription: String,
       taskDate: String,
+      isPersonal: Boolean
     });
 
     const user = await Meteor.users.findOneAsync(this.userId);
@@ -21,6 +22,7 @@ Meteor.methods({
       description: data.taskDescription,
       date: new Date(data.taskDate),
       status: "Cadastrada",
+      isPersonal: data.isPersonal,
       createdAt: new Date(),
       updatedAt: new Date(),
       userId: this.userId,
@@ -32,7 +34,7 @@ Meteor.methods({
     });
   },
 
-  async "tasks.update"({ _id, name, description, status, date }) {
+  async "tasks.update"({ _id, name, description, status, date, isPersonal }) {
     if (!this.userId) {
       throw new Meteor.Error("not-authorized", "Não autorizado");
     }
@@ -42,6 +44,7 @@ Meteor.methods({
     check(description, String);
     check(status, String);
     check(date, String);
+    check(isPersonal, Boolean);
 
     const task = await TasksCollection.findOneAsync({ _id });
 
@@ -62,27 +65,10 @@ Meteor.methods({
           status,
           date: new Date(date),
           updatedAt: new Date(),
+          isPersonal
         },
       }
     );
-  },
-
-  async "tasks.delete"({ _id }) {
-    if (!this.userId) {
-      throw new Meteor.Error("Not authorized.");
-    }
-
-    const task = await TasksCollection.findOneAsync(_id);
-
-    if (!task) {
-      throw new Meteor.Error("Task not found.");
-    }
-
-    if (task.userId !== this.userId) {
-      throw new Meteor.Error("Access denied.");
-    }
-
-    return TasksCollection.removeAsync(_id);
   },
 
   async "tasks.updateStatus"({ _id, status }) {
@@ -116,5 +102,23 @@ Meteor.methods({
         $set: { status },
       }
     );
+  },
+
+  async "tasks.delete"({ _id }) {
+    if (!this.userId) {
+      throw new Meteor.Error("Not authorized.");
+    }
+
+    const task = await TasksCollection.findOneAsync(_id);
+
+    if (!task) {
+      throw new Meteor.Error("Task not found.");
+    }
+
+    if (task.userId !== this.userId) {
+      throw new Meteor.Error("Access denied.");
+    }
+
+    return TasksCollection.removeAsync(_id);
   },
 });
