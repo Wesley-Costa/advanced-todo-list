@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Meteor } from "meteor/meteor";
 import { Link, useNavigate } from "react-router-dom";
 import { Box, Button, Paper, TextField, Typography, Alert, Collapse } from "@mui/material";
-import "../styles/styles.css";
+
 export const RegisterPage = () => {
   const navigate = useNavigate();
 

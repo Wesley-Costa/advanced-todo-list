@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Accounts } from "meteor/accounts-base";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Alert, Box, Button, Collapse, Paper, TextField, Typography} from "@mui/material";
-import "../styles/styles.css";
 
 export const ResetPasswordPage = () => {
   const { token } = useParams();

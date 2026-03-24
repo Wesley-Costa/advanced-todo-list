@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Alert, Box, Button, Container, Paper, TextField, Typography, Dialog, 
   DialogTitle, DialogContent, DialogContentText, DialogActions, Checkbox, FormControlLabel } from "@mui/material";
 import { Meteor } from "meteor/meteor";
-import "../styles/styles.css";
+import { SideMenu } from "../../components/SideMenu";
 
 export function TaskRegisterPage() {
   const navigate = useNavigate();
@@ -165,100 +165,103 @@ export function TaskRegisterPage() {
   };
 
   return (
-    <Container maxWidth="sm" className="register-task-container">
-      <Paper elevation={3} className="register-task-paper">
-        <Typography variant="h5" className="register-task-title">
-          Cadastrar Tarefa
-        </Typography>
+    <>
+      <SideMenu />
+      <Container maxWidth="sm" className="register-task-container">
+        <Paper elevation={3} className="register-task-paper">
+          <Typography variant="h5" className="register-task-title">
+            Cadastrar Tarefa
+          </Typography>
 
-        {feedback.message && (
-          <Box className="register-task-alert-wrapper">
-            <Alert severity={feedback.type} className="register-task-alert">
-              {feedback.message}
-            </Alert>
+          {feedback.message && (
+            <Box className="register-task-alert-wrapper">
+              <Alert severity={feedback.type} className="register-task-alert">
+                {feedback.message}
+              </Alert>
+            </Box>
+          )}
+
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            className="register-task-form"
+          >
+            <TextField
+              fullWidth
+              label="Nome"
+              value={taskName}
+              onChange={(e) => setTaskName(e.target.value)}
+              margin="normal"
+            />
+
+            <TextField
+              fullWidth
+              label="Descrição"
+              value={taskDescription}
+              onChange={(e) => setTaskDescription(e.target.value)}
+              margin="normal"
+              multiline
+              rows={4}
+            />
+
+            <TextField
+              fullWidth
+              label="Data e hora"
+              type="datetime-local"
+              value={taskDate}
+              onChange={(e) => setTaskDate(e.target.value)}
+              margin="normal"
+              helperText="Selecione a data atual ou uma data futura."
+              slotProps={{
+                inputLabel: {
+                  shrink: true,
+                },
+                htmlInput: {
+                  min: getMinDateTime(),
+                },
+              }}
+            />
+
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={isPersonal}
+                  onChange={(e) => setIsPersonal(e.target.checked)}
+                />
+              }
+              label="Tarefa pessoal"
+            />
+
+
+            <Box className="register-task-actions">
+              <Button
+                variant="outlined"
+                onClick={() => handleOpenDialog("cancel")}
+                disabled={loading}
+              >
+                Cancelar
+              </Button>
+
+              <Button type="submit" variant="contained" disabled={loading}>
+                Salvar
+              </Button>
+            </Box>
           </Box>
-        )}
 
-        <Box
-          component="form"
-          onSubmit={handleSubmit}
-          className="register-task-form"
-        >
-          <TextField
-            fullWidth
-            label="Nome"
-            value={taskName}
-            onChange={(e) => setTaskName(e.target.value)}
-            margin="normal"
-          />
-
-          <TextField
-            fullWidth
-            label="Descrição"
-            value={taskDescription}
-            onChange={(e) => setTaskDescription(e.target.value)}
-            margin="normal"
-            multiline
-            rows={4}
-          />
-
-          <TextField
-            fullWidth
-            label="Data e hora"
-            type="datetime-local"
-            value={taskDate}
-            onChange={(e) => setTaskDate(e.target.value)}
-            margin="normal"
-            helperText="Selecione a data atual ou uma data futura."
-            slotProps={{
-              inputLabel: {
-                shrink: true,
-              },
-              htmlInput: {
-                min: getMinDateTime(),
-              },
-            }}
-          />
-
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={isPersonal}
-                onChange={(e) => setIsPersonal(e.target.checked)}
-              />
-            }
-            label="Tarefa pessoal"
-          />
-
-
-          <Box className="register-task-actions">
-            <Button
-              variant="outlined"
-              onClick={() => handleOpenDialog("cancel")}
-              disabled={loading}
-            >
-              Cancelar
-            </Button>
-
-            <Button type="submit" variant="contained" disabled={loading}>
-              Salvar
-            </Button>
-          </Box>
-        </Box>
-
-        <Dialog open={dialogOpen} onClose={handleCloseDialog}>
-          <DialogTitle>{getDialogTitle()}</DialogTitle>
-          <DialogContent>
-            <DialogContentText>{getDialogMessage()}</DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseDialog}>Não</Button>
-            <Button onClick={handleConfirmAction} variant="contained" autoFocus>
-              Sim
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </Paper>
-    </Container>
+          <Dialog open={dialogOpen} onClose={handleCloseDialog}>
+            <DialogTitle>{getDialogTitle()}</DialogTitle>
+            <DialogContent>
+              <DialogContentText>{getDialogMessage()}</DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseDialog}>Não</Button>
+              <Button onClick={handleConfirmAction} variant="contained" autoFocus>
+                Sim
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </Paper>
+      </Container>
+    </>
   );
 }

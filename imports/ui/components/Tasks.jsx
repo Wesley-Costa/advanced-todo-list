@@ -5,7 +5,6 @@ import { useTracker } from "meteor/react-meteor-data";
 import { Meteor } from "meteor/meteor";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import "../styles/styles.css";
 
 export const Tasks = ({ tasks, onEditTask, onDeleteTask }) => {
   const [anchorEl, setAchorEl] = useState(null);
