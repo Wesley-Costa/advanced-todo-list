@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTracker } from "meteor/react-meteor-data";
 import { Meteor } from "meteor/meteor";
-import { TasksCollection } from "../../api/TasksCollection";
+
+import { TasksCollection } from "../../../api/tasks/TasksCollection";
+import { SideMenu } from "../../components/SideMenu";
+
 import { Box, Button, Container, Stack, Paper, TextField, Typography, CircularProgress, Alert, 
   Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, FormControlLabel, Checkbox } from "@mui/material";
-import "../styles/styles.css";
-import { SideMenu } from "../components/SideMenu";
+
 
 export function TaskDetailsPage() {
   const navigate = useNavigate();

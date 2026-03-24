@@ -8,7 +8,6 @@ import MenuIcon from "@mui/icons-material/Menu";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
-import "../styles/styles.css";
 
 export function SideMenu() {
   const [expanded, setExpanded] = useState();

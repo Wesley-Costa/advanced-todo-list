@@ -1,0 +1,120 @@
+.side-menu-drawer {
+  width: 260px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.side-menu-paper {
+  overflow-x: hidden !important;
+  transition: width 0.6s ease !important;
+  box-sizing: border-box;
+  border-right: 1px solid #ffffff;
+  background-color: #ffffff;
+}
+
+.side-menu-paper.expanded {
+  width: 200px !important;
+}
+
+.side-menu-paper.collapsed {
+  width: 65px !important;
+}
+
+.side-menu-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.side-menu-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 12px !important;
+  min-height: 64px !important;
+}
+
+.side-menu-toggle {
+  color: #555 !important;
+}
+
+.side-menu-title {
+  font-weight: 600 !important;
+  white-space: nowrap;
+}
+
+.side-menu-user-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  min-height: 72px;
+}
+
+.side-menu-avatar {
+  width: 40px !important;
+  height: 40px !important;
+  background-color: #bdbdbd !important;
+  flex-shrink: 0;
+}
+
+.side-menu-user-info {
+  overflow: hidden;
+}
+
+.side-menu-user-name {
+  font-weight: 500 !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.side-menu-user-email {
+  color: rgb(85, 85, 99) !important;
+  font-size: 0.85rem !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.side-menu-list {
+  padding-top: 8px !important;
+}
+
+.side-menu-item {
+  min-height: 52px !important;
+  padding: 0 16px !important;
+}
+
+.side-menu-icon {
+  min-width: 40px !important;
+  color: #555 !important;
+}
+
+.side-menu-footer {
+  margin-top: auto;
+  padding-bottom: 8px;
+}
+
+.logout-item {
+  color: #ed1111 !important;
+}
+
+.logout-icon {
+  color: #ed1111 !important;
+}
+
+.side-menu-paper.collapsed .side-menu-user-section {
+  justify-content: center;
+  padding: 16px 0;
+}
+
+.side-menu-paper.collapsed .side-menu-item {
+  justify-content: center;
+  padding: 0 !important;
+}
+
+.side-menu-paper.collapsed .side-menu-icon {
+  min-width: unset !important;
+}

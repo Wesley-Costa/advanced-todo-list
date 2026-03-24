@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Accounts } from "meteor/accounts-base";
 import { Link } from "react-router-dom";
 import { Alert, Box, Button, Paper, TextField, Typography, Collapse } from "@mui/material";
-import "../styles/styles.css";
 
 export const ForgotPasswordPage = () => {
   const [email, setEmail] = useState("");

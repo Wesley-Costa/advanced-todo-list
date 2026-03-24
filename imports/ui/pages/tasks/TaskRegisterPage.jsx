@@ -3,8 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Alert, Box, Button, Container, Paper, TextField, Typography, Dialog, 
   DialogTitle, DialogContent, DialogContentText, DialogActions, Checkbox, FormControlLabel } from "@mui/material";
 import { Meteor } from "meteor/meteor";
-import { SideMenu } from "../components/SideMenu";
-import "../styles/styles.css";
+import { SideMenu } from "../../components/SideMenu";
 
 export function TaskRegisterPage() {
   const navigate = useNavigate();
