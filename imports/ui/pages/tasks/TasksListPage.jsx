@@ -8,7 +8,7 @@ import { Tasks } from "../../components/Tasks";
 import { SideMenu } from "../../components/SideMenu";
 import AddIcon from "@mui/icons-material/Add";
 
-export function TasksListPage() {
+export const TasksListPage = () => {
   const navigate = useNavigate();
 
   const { tasks, isLoading } = useTracker(() => {
