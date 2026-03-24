@@ -10,7 +10,7 @@ import { Box, Button, Container, Stack, Paper, TextField, Typography, CircularPr
   Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, FormControlLabel, Checkbox } from "@mui/material";
 
 
-export function TaskDetailsPage() {
+export const TaskDetailsPage = () => {
   const navigate = useNavigate();
   const user = useTracker(() => Meteor.user());
   const { id } = useParams();

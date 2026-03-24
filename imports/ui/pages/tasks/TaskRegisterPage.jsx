@@ -5,7 +5,7 @@ import { Alert, Box, Button, Container, Paper, TextField, Typography, Dialog,
 import { Meteor } from "meteor/meteor";
 import { SideMenu } from "../../components/SideMenu";
 
-export function TaskRegisterPage() {
+export const TaskRegisterPage = () => {
   const navigate = useNavigate();
   const [taskName, setTaskName] = useState("");
   const [taskDescription, setTaskDescription] = useState("");

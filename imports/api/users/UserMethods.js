@@ -72,4 +72,38 @@ Meteor.methods({
 
     return true;
   },
+
+  async "users.updateProfile"({
+    name,
+    email,
+    birthDate,
+    gender,
+    company,
+    photo,
+  }) {
+    if (!this.userId) {
+      throw new Meteor.Error("not-authorized", "Usuário não autenticado.");
+    }
+
+    check(name, String);
+    check(email, String);
+    check(birthDate, String);
+    check(gender, String);
+    check(company, String);
+    check(photo, Match.Maybe(String));
+
+    await Meteor.users.updateAsync(
+      { _id: this.userId },
+      {
+        $set: {
+          "profile.name": name,
+          "profile.birthDate": birthDate,
+          "profile.gender": gender,
+          "profile.company": company,
+          "profile.photo": photo || "",
+          "emails.0.address": email,
+        },
+      }
+    );
+  },
 });

@@ -11,6 +11,7 @@ import { ResetPasswordPage } from "../pages/auth/ResetPasswordPage";
 import { TasksListPage } from "../pages/tasks/TasksListPage";
 import { TaskRegisterPage } from "../pages/tasks/TaskRegisterPage";
 import { TaskDetailsPage } from "../pages/tasks/TaskDetailsPage";
+import { ProfilePage } from "../pages/profile/ProfilePage";
 
 export default function AppRoutes() {
   const { user, isLoading } = useTracker(() => {
@@ -25,19 +26,17 @@ export default function AppRoutes() {
       <Routes>
         <Route
           path="/login"
-          element={user ? <Navigate to="/tasks" replace /> : <LoginPage />}
+          element={user ? <Navigate to="/" replace /> : <LoginPage />}
         />
 
         <Route
           path="/register"
-          element={user ? <Navigate to="/tasks" replace /> : <RegisterPage />}
+          element={user ? <Navigate to="/" replace /> : <RegisterPage />}
         />
 
         <Route
           path="/forgot-password"
-          element={
-            user ? <Navigate to="/tasks" replace /> : <ForgotPasswordPage />
-          }
+          element={user ? <Navigate to="/" replace /> : <ForgotPasswordPage />}
         />
 
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
@@ -45,14 +44,12 @@ export default function AppRoutes() {
         <Route
           path="/"
           element={
-            user ? (
-              <Navigate to="/tasks" replace />
-            ) : (
-              <Navigate to="/login" replace />
-            )
+            <ProtectedRoute user={user} isLoading={isLoading}>
+              <TasksListPage />
+            </ProtectedRoute>
           }
         />
-
+        
         <Route
           path="/tasks"
           element={
@@ -76,6 +73,15 @@ export default function AppRoutes() {
           element={
             <ProtectedRoute user={user} isLoading={isLoading}>
               <TaskDetailsPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute user={user} isLoading={isLoading}>
+              <ProfilePage />
             </ProtectedRoute>
           }
         />

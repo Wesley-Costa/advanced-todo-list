@@ -10,7 +10,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
 
 export function SideMenu() {
-  const [expanded, setExpanded] = useState();
+  const [expanded, setExpanded] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -53,8 +53,12 @@ export function SideMenu() {
       <Divider />
 
       <Box className="side-menu-user-section">
-        <Avatar className="side-menu-avatar">
-          {(user?.profile?.name || "U")[0].toUpperCase()}
+        <Avatar
+          className="side-menu-avatar"
+          src={user?.profile?.photo || ""}
+        >
+          {!user?.profile?.photo &&
+            (user?.profile?.name || "U")[0].toUpperCase()}
         </Avatar>
 
         {expanded && (
@@ -70,6 +74,7 @@ export function SideMenu() {
 
       <Box>
         <List className="side-menu-list">
+
           <Tooltip title={!expanded ? "Tarefas" : ""} placement="right">
             <ListItemButton
               selected={location.pathname === "/tasks"}

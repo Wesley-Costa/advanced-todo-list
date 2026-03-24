@@ -1,0 +1,90 @@
+.profile-page-container {
+  margin-top: 32px;
+  margin-bottom: 32px;
+}
+
+.profile-page-paper {
+  padding: 24px;
+  border-radius: 12px !important;
+  background: #ffffff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08) !important;
+}
+
+.profile-page-title {
+  text-align: center;
+  margin-bottom: 24px !important;
+  font-weight: 600 !important;
+}
+
+.profile-loading-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 240px;
+}
+
+.profile-avatar-section {
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.profile-avatar {
+  width: 90px !important;
+  height: 90px !important;
+}
+
+.profile-photo-button {
+  margin-top: 8px !important;
+}
+
+.profile-form {
+  width: 100%;
+}
+
+.profile-details {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.profile-field {
+  width: 100%;
+}
+
+.profile-alert-wrapper {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.profile-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.profile-details .MuiTypography-body1 {
+  font-size: 1.1rem !important;
+  font-weight: 500;
+  color: #222;
+}
+
+@media (max-width: 600px) {
+  .profile-page-container {
+    margin-top: 24px;
+    margin-bottom: 24px;
+  }
+
+  .profile-page-paper {
+    padding: 20px;
+  }
+
+  .profile-page-title {
+    font-size: 1.8rem !important;
+  }
+
+  .profile-form-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
