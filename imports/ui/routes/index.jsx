@@ -12,6 +12,7 @@ import { TasksListPage } from "../pages/tasks/TasksListPage";
 import { TaskRegisterPage } from "../pages/tasks/TaskRegisterPage";
 import { TaskDetailsPage } from "../pages/tasks/TaskDetailsPage";
 import { ProfilePage } from "../pages/profile/ProfilePage";
+import { DashboardPage } from "../pages/dashboard/DashboardPage";
 
 export default function AppRoutes() {
   const { user, isLoading } = useTracker(() => {
@@ -45,7 +46,7 @@ export default function AppRoutes() {
           path="/"
           element={
             <ProtectedRoute user={user} isLoading={isLoading}>
-              <TasksListPage />
+              <DashboardPage />
             </ProtectedRoute>
           }
         />
