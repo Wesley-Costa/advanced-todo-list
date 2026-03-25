@@ -1,17 +1,19 @@
 import React, { useState } from "react";
-import { List, ListItem, ListItemIcon, ListItemText, IconButton, Box, Typography, Menu, MenuItem, Dialog, DialogTitle, 
-  DialogContent, DialogContentText, DialogActions, Button } from "@mui/material";
+import { List, ListItem, ListItemIcon, ListItemText, IconButton, Box, Typography, Menu, 
+  MenuItem, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Chip } from "@mui/material";
 import { useTracker } from "meteor/react-meteor-data";
 import { Meteor } from "meteor/meteor";
-import AssignmentIcon from "@mui/icons-material/Assignment";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import AutorenewIcon from "@mui/icons-material/Autorenew";
+import PendingActionsIcon from "@mui/icons-material/PendingActions";
 
 export const Tasks = ({ tasks, onEditTask, onDeleteTask }) => {
   const [anchorEl, setAchorEl] = useState(null);
   const [selectedTask, setSelectedTask] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogAction, setDialogAction] = useState("");
-  const user = useTracker(() => Meteor.user())
+  const user = useTracker(() => Meteor.user());
 
   const handleMenuOpen = (e, task) => {
     setAchorEl(e.currentTarget);
@@ -68,25 +70,74 @@ export const Tasks = ({ tasks, onEditTask, onDeleteTask }) => {
     return "Deseja continuar?";
   };
 
+  const getTaskStatusIcon = (status) => {
+    if (status === "Concluída") {
+      return <CheckCircleIcon color="success" />;
+    }
+
+    if (status === "Em Andamento") {
+      return <AutorenewIcon color="primary" />;
+    }
+
+    return <PendingActionsIcon color="warning" />;
+  };
+
+  const getTaskStatusChip = (status) => {
+    if (status === "Concluída") {
+      return (
+        <Chip
+          label="Concluída"
+          color="success"
+          size="small"
+          className="task-status-chip"
+        />
+      );
+    }
+
+    if (status === "Em Andamento") {
+      return (
+        <Chip
+          label="Em Andamento"
+          color="primary"
+          size="small"
+          className="task-status-chip"
+        />
+      );
+    }
+
+    return (
+      <Chip
+        label="Cadastrada"
+        color="warning"
+        size="small"
+        className="task-status-chip"
+      />
+    );
+  };
+
   return (
     <>
       <List className="tasks-list">
         {tasks.map((task) => (
           <ListItem key={task._id} className="task-item">
             <ListItemIcon>
-              <AssignmentIcon />
+              {getTaskStatusIcon(task.status)}
             </ListItemIcon>
 
             <ListItemText
               primary={
-                <Box>
-                  <Typography
-                    variant="body1"
-                    color="text.secondary"
-                    className="task-item-title"
-                  >
-                    {new Date(task.date).toLocaleString("pt-BR")} - {task.name}
-                  </Typography>
+                <Box className="task-item-content">
+                  <Box className="task-item-header">
+                    <Typography
+                      variant="body1"
+                      color="text.secondary"
+                      className={`task-item-title ${
+                        task.status === "Concluída" ? "task-item-title-completed" : ""
+                      }`}
+                    >
+                      {new Date(task.date).toLocaleString("pt-BR")} - {task.name}
+                    </Typography>
+                  </Box>
                 </Box>
               }
               secondary={
@@ -101,6 +152,9 @@ export const Tasks = ({ tasks, onEditTask, onDeleteTask }) => {
                 </Box>
               }
             />
+
+            {getTaskStatusChip(task.status)}
+
             <IconButton onClick={(e) => handleMenuOpen(e, task)}>
               <MoreVertIcon />
             </IconButton>
@@ -114,11 +168,15 @@ export const Tasks = ({ tasks, onEditTask, onDeleteTask }) => {
         onClose={handleMenuClose}
       >
         <MenuItem onClick={handleEditTask}>
-          { user?._id === selectedTask?.userId ? "Editar" : "Visualizar"}
+          {user?._id === selectedTask?.userId ? "Editar" : "Visualizar"}
         </MenuItem>
-        
-        <MenuItem onClick={() => handleOpenDialog("delete")}  disabled={user?._id !== selectedTask?.userId}>Excluir</MenuItem>
-      
+
+        <MenuItem
+          onClick={() => handleOpenDialog("delete")}
+          disabled={user?._id !== selectedTask?.userId}
+        >
+          Excluir
+        </MenuItem>
       </Menu>
 
       <Dialog open={dialogOpen} onClose={handleCloseDialog}>
