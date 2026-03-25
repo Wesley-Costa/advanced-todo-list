@@ -26,7 +26,7 @@ export const TaskDetailsPage = () => {
   const [dialogAction, setDialogAction] = useState("");
 
   const { task, isLoading } = useTracker(() => {
-    const handle = Meteor.subscribe("tasks");
+    const handle = Meteor.subscribe("tasks", { _id: id });
     const isLoading = !handle.ready();
 
     const task = TasksCollection.findOne({ _id: id });
