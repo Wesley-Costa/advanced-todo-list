@@ -8,9 +8,10 @@ import MenuIcon from "@mui/icons-material/Menu";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
+import DashboardIcon from '@mui/icons-material/Dashboard';
 
 export function SideMenu() {
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -39,12 +40,21 @@ export function SideMenu() {
       }}
     >
       <Toolbar className="side-menu-header">
-        <IconButton onClick={handleToggleMenu} className="side-menu-toggle">
+        <IconButton 
+          onClick={handleToggleMenu} 
+          className="side-menu-toggle"
+          sx={{ cursor: "pointer" }}
+        >
           <MenuIcon />
         </IconButton>
 
         {expanded && (
-          <Typography variant="h6" className="side-menu-title">
+          <Typography 
+            variant="h6" 
+            className="side-menu-title"
+            onClick={() => handleNavigate("/")}
+            sx={{ cursor: "pointer", flex: 1 }}
+          >
             Menu
           </Typography>
         )}
@@ -52,7 +62,11 @@ export function SideMenu() {
 
       <Divider />
 
-      <Box className="side-menu-user-section">
+      <Box 
+        className="side-menu-user-section"
+        onClick={() => handleNavigate("/")}
+        sx={{ cursor: "pointer" }}
+      >
         <Avatar
           className="side-menu-avatar"
           src={user?.profile?.photo || ""}
@@ -74,6 +88,19 @@ export function SideMenu() {
 
       <Box>
         <List className="side-menu-list">
+          <Tooltip title={!expanded ? "Dashboard" : ""} placement="right">
+            <ListItemButton
+              selected={location.pathname === "/"}
+              onClick={() => handleNavigate("/")}
+              className="side-menu-item"
+            >
+              <ListItemIcon className="side-menu-icon">
+                <DashboardIcon />
+              </ListItemIcon>
+
+              {expanded && <ListItemText primary="Dashboard" />}
+            </ListItemButton>
+          </Tooltip>
 
           <Tooltip title={!expanded ? "Tarefas" : ""} placement="right">
             <ListItemButton

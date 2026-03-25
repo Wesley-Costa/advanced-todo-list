@@ -8,6 +8,7 @@ import "../../ui/styles/auth.css";
 import "../../ui/styles/tasks.css";
 import "../../ui/styles/components.css";
 import "../../ui/styles/profile.css";
+import "../../ui/styles/dashboard.css";
 
 Meteor.startup(() => {
   const container = document.getElementById("react-target");
