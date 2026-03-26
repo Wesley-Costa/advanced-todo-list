@@ -238,6 +238,25 @@
   color: #888 !important;
 }
 
+.tasks-page-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.task-field-search {
+  background: #ffffff;
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+  padding: 0 8px;
+}
+
 @media (max-width: 600px) {
 
   .task-item-header {

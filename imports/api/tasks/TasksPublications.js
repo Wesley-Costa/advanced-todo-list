@@ -1,10 +1,10 @@
 import { Meteor } from "meteor/meteor";
 import { TasksCollection } from "./TasksCollection";
 
-Meteor.publish("tasks", function ({ showCompleted = false, _id } = {}) {
+Meteor.publish("tasks", function ({ showCompleted = false, search = "", _id, page = 1 } = {}) {
   if (!this.userId) {
     return this.ready();
-  }
+  }  
 
   const visibilityQuery = {
     $or: [
@@ -13,6 +13,13 @@ Meteor.publish("tasks", function ({ showCompleted = false, _id } = {}) {
     ],
   };
 
+  const query = {
+    ...visibilityQuery,
+  };
+
+  const itemsPerPage = 4;
+  const skip = (page - 1) * itemsPerPage;
+
   if (_id) {
     return TasksCollection.find({
       _id,
@@ -20,15 +27,20 @@ Meteor.publish("tasks", function ({ showCompleted = false, _id } = {}) {
     });
   }
 
-  const query = {
-    ...visibilityQuery,
-  };
-
   if (!showCompleted) {
     query.status = { $in: ["Cadastrada", "Em Andamento"] };
   }
 
+  if (search && search.trim()) {
+    query.name = {
+      $regex: search.trim(),
+      $options: "i",
+    };
+  }
+
   return TasksCollection.find(query, {
     sort: { createdAt: -1 },
+    skip: skip,
+    limit: itemsPerPage
   });
 });
