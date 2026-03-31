@@ -4,6 +4,7 @@ import { Meteor } from "meteor/meteor";
 import { useTracker } from "meteor/react-meteor-data";
 
 import { ProtectedRoute } from "../components/ProtectedRoute";
+import { Layout } from "../components/Layout";
 import { LoginPage } from "../pages/auth/LoginPage";
 import { RegisterPage } from "../pages/auth/RegisterPage";
 import { ForgotPasswordPage } from "../pages/auth/ForgotPasswordPage";
@@ -42,52 +43,54 @@ export default function AppRoutes() {
 
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
 
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute user={user} isLoading={isLoading}>
-              <DashboardPage />
-            </ProtectedRoute>
-          }
-        />
-        
-        <Route
-          path="/tasks"
-          element={
-            <ProtectedRoute user={user} isLoading={isLoading}>
-              <TasksListPage />
-            </ProtectedRoute>
-          }
-        />
+        <Route element={<Layout />}>
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute user={user} isLoading={isLoading}>
+                <DashboardPage />
+              </ProtectedRoute>
+            }
+          />
+          
+          <Route
+            path="/tasks"
+            element={
+              <ProtectedRoute user={user} isLoading={isLoading}>
+                <TasksListPage />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="/tasks/register"
-          element={
-            <ProtectedRoute user={user} isLoading={isLoading}>
-              <TaskRegisterPage />
-            </ProtectedRoute>
-          }
-        />
+          <Route
+            path="/tasks/register"
+            element={
+              <ProtectedRoute user={user} isLoading={isLoading}>
+                <TaskRegisterPage />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="/task/:id/edit"
-          element={
-            <ProtectedRoute user={user} isLoading={isLoading}>
-              <TaskDetailsPage />
-            </ProtectedRoute>
-          }
-        />
+          <Route
+            path="/task/:id/edit"
+            element={
+              <ProtectedRoute user={user} isLoading={isLoading}>
+                <TaskDetailsPage />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute user={user} isLoading={isLoading}>
-              <ProfilePage />
-            </ProtectedRoute>
-          }
-        />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute user={user} isLoading={isLoading}>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

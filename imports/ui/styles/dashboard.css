@@ -1,5 +1,5 @@
 .dashboard-page-container {
-  margin-top: 150px;
+  margin-top: 80px;
   margin-bottom: 32px;
 }
 
@@ -30,7 +30,8 @@
   background: #e2e3e6 !important;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start; 
+  gap: 15px;
   box-sizing: border-box;
 }
 
@@ -51,33 +52,11 @@
 }
 
 .dashboard-action-button {
-  padding: 0 !important;
-  font-size: 1.3rem !important;
-  color: #000000 !important;
-  text-transform: none !important;
   display: flex;
   width: 100%;
   min-height: 100%;
-}
-
-@media (max-width: 600px) {
-  .dashboard-page-container {
-    margin-top: 24px;
-    margin-bottom: 24px;
-  }
-
-  .dashboard-welcome-text {
-    font-size: 1.3rem !important;
-    margin-bottom: 24px !important;
-  }
-
-  .dashboard-grid {
-    grid-template-columns: 1fr;
-    max-width: 100%;
-    gap: 16px;
-  }
-
-  .dashboard-card {
-    min-height: 120px;
-  }
+  padding: 0 !important;
+  font-size: 1.3rem !important;
+  color: #000 !important;
+  text-transform: none !important;
 }

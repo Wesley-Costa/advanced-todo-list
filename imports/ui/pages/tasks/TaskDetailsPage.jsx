@@ -220,7 +220,6 @@ export const TaskDetailsPage = () => {
 
   return (
     <>
-      <SideMenu />
       <Container maxWidth="md" className="task-details-container">
         <Paper className="task-details-paper">
           <Typography variant="h4" className="task-details-title">
@@ -262,11 +261,11 @@ export const TaskDetailsPage = () => {
 
           {!isEditing && user?._id === task.userId && (
             <Box className="task-details-status-actions">
-              <Typography variant="h6" sx={{ mb: 2 }}>
+              <Typography variant="h6">
                 Alterar Situação da Tarefa
               </Typography>
 
-              <Stack direction="row" spacing={2} flexWrap="wrap">
+              <Stack direction="row" spacing={2}>
                 <Button
                   variant="outlined"
                   color="primary"
@@ -302,7 +301,6 @@ export const TaskDetailsPage = () => {
               label="Criador"
               value={formData.userName}
               disabled
-              fullWidth
               className="task-details-field"
             />
 
@@ -311,7 +309,6 @@ export const TaskDetailsPage = () => {
               value={formData.name}
               onChange={(e) => handleChange("name", e.target.value)}
               disabled={!isEditing || redirecting}
-              fullWidth
               className="task-details-field"
             />
 
@@ -320,9 +317,8 @@ export const TaskDetailsPage = () => {
               value={formData.description}
               onChange={(e) => handleChange("description", e.target.value)}
               disabled={!isEditing || redirecting}
-              fullWidth
               multiline
-              rows={4}
+              rows={3}
               className="task-details-field"
             />
 
@@ -330,7 +326,6 @@ export const TaskDetailsPage = () => {
               label="Situação"
               value={formData.status}
               disabled
-              fullWidth
               className="task-details-field"
             />
 
@@ -340,7 +335,6 @@ export const TaskDetailsPage = () => {
               value={formData.date}
               onChange={(e) => handleChange("date", e.target.value)}
               disabled={!isEditing || redirecting}
-              fullWidth
               InputLabelProps={{ shrink: true }}
               className="task-details-field"
             />

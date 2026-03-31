@@ -1,5 +1,6 @@
 import { Accounts } from "meteor/accounts-base";
 import { check } from "meteor/check";
+import { TasksCollection } from "../tasks/TasksCollection";
 
 Meteor.methods({
   async "users.register"(data) {
@@ -104,6 +105,12 @@ Meteor.methods({
           "emails.0.address": email,
         },
       }
+    );
+
+    await TasksCollection.updateAsync(
+      { userId: this.userId },
+      { $set: { userName: name.trim() } },
+      { multi: true }
     );
   },
 });

@@ -86,6 +86,10 @@ export const ProfilePage = () => {
     reader.readAsDataURL(file);
   };
 
+  const handleRemovePhoto = () => {
+    setForm((prev) => ({ ...prev, photo: "" }));
+  };
+
   const handleEditClick = () => {
     setError("");
     setSuccessMessage("");
@@ -101,6 +105,32 @@ export const ProfilePage = () => {
 
   const handleSaveClick = () => {
     setError("");
+
+    if (!form.name.trim()) {
+      setError("O campo Nome é obrigatório.");
+      return;
+    }
+
+    if (!form.email.trim()) {
+      setError("O campo Email é obrigatório.");
+      return;
+    }
+
+    if (!form.birthDate) {
+      setError("O campo Data de nascimento é obrigatório.");
+      return;
+    }
+
+    if (!form.gender) {
+      setError("O campo Sexo é obrigatório.");
+      return;
+    }
+
+    if (!form.company) {
+      setError("O campo de Empresa é obrigatório.");
+      return;
+    }
+
     setConfirmOpen(true);
   };
 
@@ -143,8 +173,6 @@ export const ProfilePage = () => {
 
   return (
     <>
-      <SideMenu />
-
       <Container maxWidth="sm" className="profile-page-container">
         <Paper className="profile-page-paper">
           <Typography variant="h4" className="profile-page-title">
@@ -159,6 +187,14 @@ export const ProfilePage = () => {
             </Box>
           )}
 
+          {error && (
+            <Box className="profile-alert-wrapper">
+              <Alert severity="error" onClose={() => setError("")}>
+                {error}
+              </Alert>
+            </Box>
+          )}
+
           <Stack className="profile-avatar-section">
             <Avatar
               src={form.photo || ""}
@@ -169,20 +205,32 @@ export const ProfilePage = () => {
             </Avatar>
 
             {isEditing && (
-              <Button
-                variant="outlined"
-                component="label"
-                size="small"
-                className="profile-photo-button"
-              >
-                Escolher foto
-                <input
-                  hidden
-                  type="file"
-                  accept="image/*"
-                  onChange={handlePhotoChange}
-                />
-              </Button>
+              <Stack direction="row" spacing={1}>
+                <Button
+                  variant="contained"
+                  component="label"
+                  size="small"
+                  className="profile-photo-button"
+                >
+                  Escolher foto
+                  <input
+                    hidden
+                    type="file"
+                    accept="image/*"
+                    onChange={handlePhotoChange}
+                  />
+                </Button>
+
+                <Button
+                  variant="outlined"
+                  size="small"
+                  className="profile-photo-button"
+                  onClick={handleRemovePhoto}
+                  disabled={!form.photo}
+                >
+                  Remover foto
+                </Button>
+              </Stack>
             )}
           </Stack>
 
@@ -261,7 +309,9 @@ export const ProfilePage = () => {
                   Data de nascimento
                 </Typography>
                 <Typography variant="body1">
-                  {form.birthDate || "—"}
+                  {form.birthDate
+                    ? new Date(form.birthDate + "T00:00:00").toLocaleDateString("pt-BR")
+                    : "—"}
                 </Typography>
               </Box>
 
@@ -280,14 +330,6 @@ export const ProfilePage = () => {
                 </Typography>
                 <Typography variant="body1">{form.company || "—"}</Typography>
               </Box>
-            </Box>
-          )}
-
-          {error && (
-            <Box className="profile-alert-wrapper">
-              <Alert severity="error" onClose={() => setError("")}>
-                {error}
-              </Alert>
             </Box>
           )}
 
