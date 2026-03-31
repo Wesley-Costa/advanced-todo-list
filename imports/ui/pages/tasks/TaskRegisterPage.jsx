@@ -166,7 +166,6 @@ export const TaskRegisterPage = () => {
 
   return (
     <>
-      <SideMenu />
       <Container maxWidth="sm" className="register-task-container">
         <Paper elevation={3} className="register-task-paper">
           <Typography variant="h5" className="register-task-title">

@@ -88,7 +88,7 @@ export const ForgotPasswordPage = () => {
         >
           <TextField
             label="Email"
-            type="text" // ← mudado de "email" para "text"
+            type="text"
             fullWidth
             margin="normal"
             value={email}

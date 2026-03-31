@@ -1,14 +1,12 @@
 .side-menu-drawer {
-  width: 260px;
   flex-shrink: 0;
   white-space: nowrap;
 }
 
 .side-menu-paper {
   overflow-x: hidden !important;
-  transition: width 0.6s ease !important;
+  transition: width 0.2s ease !important;
   box-sizing: border-box;
-  border-right: 1px solid #ffffff;
   background-color: #ffffff;
 }
 
@@ -17,31 +15,34 @@
 }
 
 .side-menu-paper.collapsed {
-  width: 65px !important;
-}
-
-.side-menu-container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  width: 0 !important;
 }
 
 .side-menu-header {
   display: flex;
-  align-items: center;
   gap: 12px;
-  padding: 0 12px !important;
-  min-height: 64px !important;
+  padding: 0 8px !important;
+}
+
+.side-menu-close {
+  margin-left: auto !important;
+  color: #ed1111 !important;
+  cursor: pointer;
 }
 
 .side-menu-toggle {
-  color: #555 !important;
+  top: 16px;
+  left: 16px;
+  z-index: 1300;
+  background: #1976d2 !important;
+  color: #ffffff !important;
+  cursor: pointer;
 }
 
 .side-menu-title {
   font-weight: 600 !important;
   white-space: nowrap;
+  cursor: pointer;
 }
 
 .side-menu-user-section {
@@ -50,6 +51,7 @@
   gap: 12px;
   padding: 16px;
   min-height: 72px;
+  cursor: pointer;
 }
 
 .side-menu-avatar {
@@ -70,14 +72,6 @@
   text-overflow: ellipsis;
 }
 
-.side-menu-user-email {
-  color: rgb(85, 85, 99) !important;
-  font-size: 0.85rem !important;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .side-menu-list {
   padding-top: 8px !important;
 }
@@ -85,6 +79,7 @@
 .side-menu-item {
   min-height: 52px !important;
   padding: 0 16px !important;
+  cursor: pointer;
 }
 
 .side-menu-icon {
@@ -97,17 +92,9 @@
   padding-bottom: 8px;
 }
 
-.logout-item {
-  color: #ed1111 !important;
-}
-
+.logout-item,
 .logout-icon {
   color: #ed1111 !important;
-}
-
-.side-menu-paper.collapsed .side-menu-user-section {
-  justify-content: center;
-  padding: 16px 0;
 }
 
 .side-menu-paper.collapsed .side-menu-item {

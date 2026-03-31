@@ -6,14 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { TasksCollection } from "../../../api/tasks/TasksCollection";
 import { SideMenu } from "../../components/SideMenu";
 
-import {
-  Box,
-  Button,
-  Container,
-  Paper,
-  Typography,
-  CircularProgress,
-} from "@mui/material";
+import { Box, Button, Container, Paper, Typography, CircularProgress } from "@mui/material";
 
 export const DashboardPage = () => {
   const navigate = useNavigate();
@@ -51,8 +44,6 @@ export const DashboardPage = () => {
 
   return (
     <>
-      <SideMenu />
-
       <Container maxWidth="md" className="dashboard-page-container">
         <Typography variant="h5" className="dashboard-welcome-text">
           Olá {user?.profile?.name || "usuário"}, seja bem-vindo ao seu Advanced To-do List

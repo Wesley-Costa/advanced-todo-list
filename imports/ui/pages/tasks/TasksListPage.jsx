@@ -60,7 +60,6 @@ export const TasksListPage = () => {
 
   return (
     <>
-      <SideMenu />
       <Container maxWidth="md" className="tasks-page-container">
         <Box className="tasks-page-header">
           <Typography variant="h4" className="tasks-page-title">
